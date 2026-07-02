@@ -12,6 +12,16 @@ const JWT_SECRET = 'connect-apartment-secret-key-2026';
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Vercel serverless functions sometimes strip the /api prefix from req.url
+// This middleware ensures req.url always has the /api prefix so existing routes match.
+app.use((req, res, next) => {
+  if (!req.url.startsWith('/api')) {
+    req.url = '/api' + req.url;
+  }
+  next();
+});
+
 // Serve the owner portal as the main site
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
