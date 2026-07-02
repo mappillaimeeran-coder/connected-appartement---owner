@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Connect Apartment – Owner & Management Portal">
+  <title>Owner Portal – Connect Apartment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ====== LOGIN SCREEN ====== -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-orb lo1"></div>
+  <div class="login-orb lo2"></div>
+  <div class="login-orb lo3"></div>
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-logo-box">
+        <svg viewBox="0 0 24 24" width="28" height="28">
+          <rect x="3" y="10" width="4" height="11" rx="1" fill="#6366f1"/>
+          <rect x="8" y="5" width="5" height="16" rx="1" fill="#3b82f6"/>
+          <rect x="14" y="8" width="4" height="13" rx="1" fill="#2563eb"/>
+          <rect x="19" y="12" width="2" height="9" rx="0.5" fill="#1d4ed8"/>
+        </svg>
+      </div>
+      <div>
+        <div class="login-brand-name">Connect Apartment</div>
+        <div class="login-brand-sub">Owner &amp; Management Portal</div>
+      </div>
+    </div>
+    <h1 class="login-title">Management Sign In</h1>
+    <p class="login-desc">Access restricted to authorized management staff only.</p>
+    <div class="login-form">
+      <div class="lf-group">
+        <label>Username</label>
+        <div class="lf-input-wrap">
+          <svg class="lf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input type="text" id="loginUser" placeholder="e.g. owner" autocomplete="username">
+        </div>
+      </div>
+      <div class="lf-group">
+        <label>Password</label>
+        <div class="lf-input-wrap">
+          <svg class="lf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+        </div>
+      </div>
+      <div id="loginErr" class="login-err hidden"></div>
+      <button class="login-btn" id="loginBtn" onclick="doLogin()">
+        <span id="loginBtnText">Sign In to Portal</span>
+      </button>
+    </div>
+    <div class="demo-section">
+      <div class="demo-label">🔑 Quick Demo Access:</div>
+      <div class="demo-pills">
+        <button class="demo-pill pill-owner" onclick="prefill('owner','owner@123')">Owner</button>
+        <button class="demo-pill pill-assoc" onclick="prefill('association','assoc@123')">Association</button>
+        <button class="demo-pill pill-fac" onclick="prefill('facility','facility@123')">Facility Mgr</button>
+        <button class="demo-pill pill-sec" onclick="prefill('security','security@123')">Security</button>
+        <button class="demo-pill pill-maint" onclick="prefill('maintenance','maint@123')">Maintenance</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MAIN APP ====== -->
+<div id="app" class="app hidden">
+
+  <!-- Emergency Alert Banner -->
+  <div id="alertBanner" class="alert-banner hidden">
+    <span class="alert-pulse-dot"></span>
+    <span id="alertBannerText">🚨 Active Emergency Alert!</span>
+    <button onclick="showPage('emergency')">View →</button>
+    <button class="alert-close-btn" onclick="document.getElementById('alertBanner').classList.add('hidden')">✕</button>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <svg viewBox="0 0 24 24" width="20" height="20">
+        <rect x="3" y="10" width="4" height="11" rx="1" fill="#6366f1"/>
+        <rect x="8" y="5" width="5" height="16" rx="1" fill="#3b82f6"/>
+        <rect x="14" y="8" width="4" height="13" rx="1" fill="#2563eb"/>
+        <rect x="19" y="12" width="2" height="9" rx="0.5" fill="#1d4ed8"/>
+      </svg>
+      <div>
+        <div class="sb-title">Owner Portal</div>
+        <div class="sb-sub">Management Suite</div>
+      </div>
+    </div>
+
+    <div class="sb-section-label">OVERVIEW</div>
+    <nav class="sb-nav">
+      <button class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-item" data-page="analytics" onclick="showPage('analytics')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Analytics</span>
+      </button>
+      <button class="nav-item" data-page="ai" onclick="showPage('ai')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3"/></svg>
+        <span>AI Assistant</span>
+      </button>
+    </nav>
+
+    <div class="sb-section-label">OPERATIONS</div>
+    <nav class="sb-nav">
+      <button class="nav-item" data-page="complaints" onclick="showPage('complaints')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span>Complaints</span>
+        <span class="nav-badge nb-amber" id="badge-complaints">0</span>
+      </button>
+      <button class="nav-item" data-page="emergency" onclick="showPage('emergency')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Emergency</span>
+        <span class="nav-badge nb-rose" id="badge-emergency">0</span>
+      </button>
+      <button class="nav-item" data-page="bookings" onclick="showPage('bookings')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Bookings</span>
+        <span class="nav-badge nb-blue" id="badge-bookings">0</span>
+      </button>
+      <button class="nav-item" data-page="parking" onclick="showPage('parking')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 16V8h3a3 3 0 0 1 0 6H9"/></svg>
+        <span>Parking</span>
+      </button>
+      <button class="nav-item" data-page="visitors" onclick="showPage('visitors')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+        <span>Visitors</span>
+      </button>
+    </nav>
+
+    <div class="sb-section-label">MANAGEMENT</div>
+    <nav class="sb-nav">
+      <button class="nav-item" data-page="finance" onclick="showPage('finance')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span>Finance</span>
+      </button>
+      <button class="nav-item" data-page="workers" onclick="showPage('workers')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20M9 20V9m6 11V4M3 9h6M15 4h6"/></svg>
+        <span>Workers</span>
+      </button>
+      <button class="nav-item" data-page="residents" onclick="showPage('residents')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Residents</span>
+      </button>
+      <button class="nav-item" data-page="cctv" onclick="showPage('cctv')">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        <span>CCTV</span>
+      </button>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-user-info">
+        <div class="sb-avatar" id="sbAvatar">O</div>
+        <div>
+          <div class="sb-uname" id="sbUname">Owner</div>
+          <div class="sb-urole" id="sbUrole">Management</div>
+        </div>
+      </div>
+      <button class="sb-logout" onclick="doLogout()">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-area">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="tb-left">
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <h2 id="pageHeading">Dashboard</h2>
+        <div class="live-pill"><span class="live-dot"></span>Live</div>
+      </div>
+      <div class="tb-right">
+        <div id="lastRefresh" class="tb-refresh-hint">Auto-refresh: 10s</div>
+        <button class="tb-btn" onclick="refreshAll()">
+          <svg id="refreshSvg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Refresh
+        </button>
+        <div class="tb-clock" id="tbClock">--:--:--</div>
+      </div>
+    </header>
+
+    <!-- ===== PAGE: DASHBOARD ===== -->
+    <section class="page-wrap" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="scard sc-indigo">
+          <div class="scard-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="scard-body"><div class="scard-val" id="sc-residents">—</div><div class="scard-lbl">Total Residents</div></div>
+        </div>
+        <div class="scard sc-amber">
+          <div class="scard-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+          <div class="scard-body"><div class="scard-val" id="sc-complaints">—</div><div class="scard-lbl">Active Complaints</div></div>
+        </div>
+        <div class="scard sc-blue">
+          <div class="scard-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div class="scard-body"><div class="scard-val" id="sc-bookings">—</div><div class="scard-lbl">Today's Bookings</div></div>
+        </div>
+        <div class="scard sc-rose">
+          <div class="scard-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg></div>
+          <div class="scard-body"><div class="scard-val" id="sc-alerts">—</div><div class="scard-lbl">Emergency Alerts</div></div>
+        </div>
+        <div class="scard sc-emerald">
+          <div class="scard-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="scard-body"><div class="scard-val" id="sc-revenue">—</div><div class="scard-lbl">Revenue Collected</div></div>
+        </div>
+        <div class="scard sc-cyan">
+          <div class="scard-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 16V8h3a3 3 0 0 1 0 6H9"/></svg></div>
+          <div class="scard-body"><div class="scard-val" id="sc-parking">—</div><div class="scard-lbl">Parking Booked</div></div>
+        </div>
+        <div class="scard sc-violet">
+          <div class="scard-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20M9 20V9m6 11V4M3 9h6M15 4h6"/></svg></div>
+          <div class="scard-body"><div class="scard-val" id="sc-workers">—</div><div class="scard-lbl">Workers Available</div></div>
+        </div>
+        <div class="scard sc-slate">
+          <div class="scard-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+          <div class="scard-body"><div class="scard-val" id="sc-pending">—</div><div class="scard-lbl">Pending Maintenance</div></div>
+        </div>
+      </div>
+      <div class="dash-two-col">
+        <div class="panel">
+          <div class="panel-hdr"><h3>📋 Recent Activity</h3></div>
+          <div class="activity-feed" id="activityFeed">
+            <div class="feed-empty">No activity yet. It will appear here as residents use the app.</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-hdr"><h3>🚨 Active Emergency Alerts</h3><button class="panel-link" onclick="showPage('emergency')">View All →</button></div>
+          <div id="dashAlerts"><div class="feed-empty">No active emergency alerts.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: COMPLAINTS ===== -->
+    <section class="page-wrap hidden" id="page-complaints">
+      <div class="panel">
+        <div class="panel-hdr">
+          <h3>🔧 Complaint Management</h3>
+          <div class="panel-actions">
+            <select class="ctrl-select" id="cmStatusFilter" onchange="renderComplaints()"><option value="">All Status</option><option value="open">Open</option><option value="in-progress">In Progress</option><option value="resolved">Resolved</option></select>
+            <input type="text" class="ctrl-input" id="cmSearch" placeholder="Search…" oninput="renderComplaints()">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table"><thead><tr><th>Ticket #</th><th>Resident</th><th>Flat</th><th>Category</th><th>Issue</th><th>Priority</th><th>Status</th><th>Worker</th><th>Actions</th></tr></thead>
+          <tbody id="complaintsTbody"></tbody></table>
+          <div class="empty-state hidden" id="complaintsEmpty"><div class="es-icon">✅</div><p>No complaints yet.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: EMERGENCY ===== -->
+    <section class="page-wrap hidden" id="page-emergency">
+      <div class="panel">
+        <div class="panel-hdr"><h3>🚨 Emergency Monitoring</h3></div>
+        <div id="emergencyAlertsContainer">
+          <div class="feed-empty">No emergency alerts recorded.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: BOOKINGS ===== -->
+    <section class="page-wrap hidden" id="page-bookings">
+      <div class="panel">
+        <div class="panel-hdr">
+          <h3>🗓️ Facility Booking Monitoring</h3>
+          <div class="panel-actions">
+            <select class="ctrl-select" id="bkFacilityFilter" onchange="renderBookings()"><option value="">All Facilities</option></select>
+            <input type="text" class="ctrl-input" id="bkSearch" placeholder="Search…" oninput="renderBookings()">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table"><thead><tr><th>Resident</th><th>Flat</th><th>Facility</th><th>Date</th><th>Slot</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="bookingsTbody"></tbody></table>
+          <div class="empty-state hidden" id="bookingsEmpty"><div class="es-icon">📭</div><p>No bookings yet.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: PARKING ===== -->
+    <section class="page-wrap hidden" id="page-parking">
+      <div class="parking-top-row">
+        <div class="panel" style="flex:1">
+          <div class="panel-hdr">
+            <h3>🚗 Parking Slot Overview</h3>
+            <div class="panel-actions">
+              <div class="parking-legend">
+                <span class="pleg available">Available</span>
+                <span class="pleg occupied">Occupied</span>
+                <span class="pleg reserved">Reserved</span>
+              </div>
+              <button class="btn-sm btn-primary" onclick="showAddParkingModal()">+ Add Slot</button>
+            </div>
+          </div>
+          <div class="parking-grid-wrap" id="parkingGrid"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-hdr"><h3>📋 Parking History</h3></div>
+        <div class="table-wrap">
+          <table class="data-table"><thead><tr><th>Slot</th><th>Flat</th><th>Vehicle</th><th>Action</th><th>Timestamp</th></tr></thead>
+          <tbody id="parkingHistoryTbody"></tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: FINANCE ===== -->
+    <section class="page-wrap hidden" id="page-finance">
+      <div class="finance-summary-row" id="financeSummary"></div>
+      <div class="two-col-equal">
+        <div class="panel">
+          <div class="panel-hdr"><h3>📊 Bill Status Breakdown</h3></div>
+          <div class="table-wrap">
+            <table class="data-table"><thead><tr><th>Bill Type</th><th>Amount</th><th>Due Date</th><th>Status</th></tr></thead>
+            <tbody id="billsTbody"></tbody></table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-hdr"><h3>💳 Payment History</h3></div>
+          <div class="table-wrap">
+            <table class="data-table"><thead><tr><th>Resident</th><th>Bill</th><th>Amount</th><th>Method</th><th>Date</th></tr></thead>
+            <tbody id="paymentsTbody"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: WORKERS ===== -->
+    <section class="page-wrap hidden" id="page-workers">
+      <div class="panel">
+        <div class="panel-hdr">
+          <h3>👷 Worker Management</h3>
+          <button class="btn-sm btn-primary" onclick="showAddWorkerModal()">+ Add Worker</button>
+        </div>
+        <div class="workers-grid" id="workersGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: CCTV ===== -->
+    <section class="page-wrap hidden" id="page-cctv">
+      <div class="panel">
+        <div class="panel-hdr">
+          <h3>📹 CCTV Monitoring</h3>
+          <div class="panel-actions">
+            <select class="ctrl-select" id="cctvFloorFilter" onchange="renderCctv()">
+              <option value="">All Floors</option>
+              <option value="Ground">Ground Floor</option>
+              <option value="1st Floor">1st Floor</option>
+              <option value="Top Floor">Top Floor</option>
+            </select>
+          </div>
+        </div>
+        <div class="cctv-grid" id="cctvGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: RESIDENTS ===== -->
+    <section class="page-wrap hidden" id="page-residents">
+      <div class="panel">
+        <div class="panel-hdr">
+          <h3>👥 Resident Management</h3>
+          <input type="text" class="ctrl-input" id="resSearch" placeholder="Search residents…" oninput="renderResidents()">
+        </div>
+        <div class="residents-grid" id="residentsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: VISITORS ===== -->
+    <section class="page-wrap hidden" id="page-visitors">
+      <div class="panel">
+        <div class="panel-hdr"><h3>📦 Visitor &amp; Delivery Log</h3></div>
+        <div class="table-wrap">
+          <table class="data-table"><thead><tr><th>Visitor Name</th><th>Type</th><th>Visiting Flat</th><th>Date</th><th>Entry Time</th><th>Exit Time</th><th>Status</th></tr></thead>
+          <tbody id="visitorsTbody"></tbody></table>
+          <div class="empty-state hidden" id="visitorsEmpty"><div class="es-icon">📭</div><p>No visitor records.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: ANALYTICS ===== -->
+    <section class="page-wrap hidden" id="page-analytics">
+      <div class="charts-grid">
+        <div class="panel chart-panel">
+          <div class="panel-hdr"><h3>📈 Monthly Revenue (₹)</h3></div>
+          <div class="chart-box"><canvas id="revenueChart"></canvas></div>
+        </div>
+        <div class="panel chart-panel">
+          <div class="panel-hdr"><h3>🔧 Complaints by Category</h3></div>
+          <div class="chart-box"><canvas id="complaintsChart"></canvas></div>
+        </div>
+        <div class="panel chart-panel">
+          <div class="panel-hdr"><h3>🏊 Facility Usage</h3></div>
+          <div class="chart-box"><canvas id="facilityChart"></canvas></div>
+        </div>
+        <div class="panel chart-panel">
+          <div class="panel-hdr"><h3>🚗 Parking Usage</h3></div>
+          <div class="chart-box"><canvas id="parkingChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PAGE: AI ASSISTANT ===== -->
+    <section class="page-wrap hidden" id="page-ai">
+      <div class="ai-container">
+        <div class="ai-header-card">
+          <div class="ai-bot-avatar">🤖</div>
+          <div>
+            <h3>AI Management Assistant</h3>
+            <p>Ask anything about your apartment — complaints, revenue, bookings, workers, and more.</p>
+          </div>
+        </div>
+        <div class="ai-suggestions">
+          <button class="ai-sugg" onclick="sendQuery('How many complaints are pending?')">Pending complaints?</button>
+          <button class="ai-sugg" onclick="sendQuery('What is the total revenue?')">Total revenue?</button>
+          <button class="ai-sugg" onclick="sendQuery('Which facility is most used?')">Most used facility?</button>
+          <button class="ai-sugg" onclick="sendQuery('How many workers are available?')">Workers available?</button>
+          <button class="ai-sugg" onclick="sendQuery('What is the parking status?')">Parking status?</button>
+          <button class="ai-sugg" onclick="sendQuery('Show unpaid rent list')">Unpaid bills?</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-msg bot-msg">
+            <div class="chat-avatar">🤖</div>
+            <div class="chat-bubble">👋 Hello! I'm your AI Management Assistant. I have live access to all apartment data. Ask me anything!</div>
+          </div>
+        </div>
+        <div class="chat-input-wrap">
+          <input type="text" id="chatInput" class="chat-input" placeholder="Ask me anything about the apartment…" onkeydown="if(event.key==='Enter') sendQuery()">
+          <button class="chat-send" onclick="sendQuery()">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+  </div><!-- /main-area -->
+</div><!-- /app -->
+
+<!-- ===== MODALS ===== -->
+<!-- Assign Worker Modal -->
+<div class="modal-overlay hidden" id="assignWorkerModal">
+  <div class="modal-card">
+    <div class="modal-hdr">
+      <h3>Assign Worker to Ticket</h3>
+      <button class="modal-close" onclick="closeModal('assignWorkerModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field">
+        <label>Ticket</label>
+        <div class="modal-val" id="awTicketInfo">—</div>
+      </div>
+      <div class="modal-field">
+        <label>Change Status</label>
+        <select class="ctrl-select w-full" id="awStatus">
+          <option value="">Keep current</option>
+          <option value="open">Open</option>
+          <option value="in-progress">In Progress</option>
+          <option value="resolved">Resolved</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Assign Worker</label>
+        <select class="ctrl-select w-full" id="awWorker">
+          <option value="">No assignment</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-sm btn-secondary" onclick="closeModal('assignWorkerModal')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="submitAssignWorker()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Worker Modal -->
+<div class="modal-overlay hidden" id="addWorkerModal">
+  <div class="modal-card">
+    <div class="modal-hdr">
+      <h3>Add New Worker</h3>
+      <button class="modal-close" onclick="closeModal('addWorkerModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field"><label>Name *</label><input type="text" class="ctrl-input w-full" id="wkName" placeholder="e.g. Ravi"></div>
+      <div class="modal-field"><label>Role *</label>
+        <select class="ctrl-select w-full" id="wkRole">
+          <option>Electrician</option><option>Plumber</option><option>Cleaner</option>
+          <option>Security Guard</option><option>Elevator Tech</option><option>Painter</option><option>Carpenter</option>
+        </select>
+      </div>
+      <div class="modal-field"><label>Phone</label><input type="text" class="ctrl-input w-full" id="wkPhone" placeholder="9876500000"></div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-sm btn-secondary" onclick="closeModal('addWorkerModal')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="submitAddWorker()">Add Worker</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Parking Slot Modal -->
+<div class="modal-overlay hidden" id="addParkingModal">
+  <div class="modal-card">
+    <div class="modal-hdr">
+      <h3>Add Parking Slot</h3>
+      <button class="modal-close" onclick="closeModal('addParkingModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field"><label>Slot ID *</label><input type="text" class="ctrl-input w-full" id="pkSlot" placeholder="e.g. D-01"></div>
+      <div class="modal-field"><label>Type *</label>
+        <select class="ctrl-select w-full" id="pkType">
+          <option>Car</option><option>Bike</option><option>Visitor</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-sm btn-secondary" onclick="closeModal('addParkingModal')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="submitAddParking()">Add Slot</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
