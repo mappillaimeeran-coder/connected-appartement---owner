@@ -27,11 +27,11 @@ app.use((req, res, next) => {
 
 // Only owner-role users for this portal
 const users = [
-  { id: '4', username: 'owner',       password: bcrypt.hashSync('owner@123',    10), name: 'Mr. Kumar',        flat: 'Owner Suite', role: 'owner', avatar: 'O'  },
-  { id: '5', username: 'association', password: bcrypt.hashSync('assoc@123',     10), name: 'Association',      flat: 'Assoc Office', role: 'owner', avatar: 'AS' },
-  { id: '6', username: 'facility',    password: bcrypt.hashSync('facility@123',  10), name: 'Facility Manager', flat: 'F-Office',     role: 'owner', avatar: 'FM' },
-  { id: '7', username: 'security',    password: bcrypt.hashSync('security@123',  10), name: 'Security Head',    flat: 'Gate Office',  role: 'owner', avatar: 'SH' },
-  { id: '8', username: 'maintenance', password: bcrypt.hashSync('maint@123',     10), name: 'Maintenance Team', flat: 'M-Office',     role: 'owner', avatar: 'MT' }
+  { id: '4', username: 'owner',       password: bcrypt.hashSync(, 4), name: 'Mr. Kumar',        flat: 'Owner Suite', role: 'owner', avatar: 'O'  },
+  { id: '5', username: 'association', password: bcrypt.hashSync(, 4), name: 'Association',      flat: 'Assoc Office', role: 'owner', avatar: 'AS' },
+  { id: '6', username: 'facility',    password: bcrypt.hashSync(, 4), name: 'Facility Manager', flat: 'F-Office',     role: 'owner', avatar: 'FM' },
+  { id: '7', username: 'security',    password: bcrypt.hashSync(, 4), name: 'Security Head',    flat: 'Gate Office',  role: 'owner', avatar: 'SH' },
+  { id: '8', username: 'maintenance', password: bcrypt.hashSync(, 4), name: 'Maintenance Team', flat: 'M-Office',     role: 'owner', avatar: 'MT' }
 ];
 
 // Resident data (read-only context for owner analytics)
