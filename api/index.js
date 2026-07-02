@@ -22,8 +22,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve the owner portal as the main site
-app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // ============ IN-MEMORY DATABASE ============
 
@@ -440,10 +438,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Catch-all: serve owner portal for SPA routing
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-});
 
 // Only listen when running locally (not on Vercel)
 if (!process.env.VERCEL) {
