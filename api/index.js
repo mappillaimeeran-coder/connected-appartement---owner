@@ -9,6 +9,11 @@ const app = express();
 const PORT = process.env.PORT || 4001;
 const JWT_SECRET = 'connect-apartment-secret-key-2026';
 
+// Serve static files from 'public' when running locally
+if (!process.env.VERCEL) {
+  app.use(express.static(path.join(__dirname, '../public')));
+}
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -16,6 +21,10 @@ app.use(express.json());
 // Vercel serverless functions sometimes strip the /api prefix from req.url
 // This middleware ensures req.url always has the /api prefix so existing routes match.
 app.use((req, res, next) => {
+  // If running locally, let static/fallback routes pass through without prefixing if they are not API calls
+  if (!process.env.VERCEL && !req.url.startsWith('/api') && !req.url.startsWith('/auth')) {
+    return next();
+  }
   if (!req.url.startsWith('/api')) {
     req.url = '/api' + req.url;
   }
@@ -428,6 +437,14 @@ app.get('/api/owner/notifications', authenticateToken, requireOwner, (req, res) 
 });
 
 // ============ ERROR HANDLING ============
+
+// Fallback to index.html for SPA routing (only when running locally)
+if (!process.env.VERCEL) {
+  app.get('*', (req, res, next) => {
+    if (req.url.startsWith('/api') || req.url.startsWith('/auth')) return next();
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+  });
+}
 
 app.use((err, req, res, next) => {
   console.error('Server Error:', err);
